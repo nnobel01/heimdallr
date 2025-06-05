@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  heimdallr:
+    build: .
+    image: heimdallr:latest
+    container_name: heimdallr-investigation
+    volumes:
+      # Mount case files and results
+      - ./cases:/app/cases:ro
+      - ./results:/app/results:rw
+      - ./config:/app/config:rw
+      # Mount API keys securely
+      - ./.env:/app/.env:ro
+    environment:
+      - PYTHONPATH=/app
+      - HEIMDALLR_DOCKER=true
+      - DISPLAY=${DISPLAY:-:0}
+    networks:
+      - investigation-network
+    security_opt:
+      - seccomp:unconfined
+    shm_size: 2gb
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+  # Optional: Database for case management
+  database:
+    image: postgres:15
+    container_name: heimdallr-db
+    environment:
+      POSTGRES_DB: heimdallr_cases
+      POSTGRES_USER: investigator
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secure_password_change_me}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - investigation-network
+    restart: unless-stopped
+
+  # Optional: Web interface for case management
+  web-interface:
+    build: ./web
+    container_name: heimdallr-web
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    environment:
+      - DB_HOST=database
+      - DB_USER=investigator
+      - DB_PASSWORD=${DB_PASSWORD:-secure_password_change_me}
+    volumes:
+      - ./results:/app/results:ro
+    networks:
+      - investigation-network
+    restart: unless-stopped
+
+networks:
+  investigation-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  postgres_data:
+    driver: local
+
+# Usage:
+# docker-compose up -d heimdallr
+# docker-compose exec heimdallr heimdallr photo.jpg
+# docker-compose down
