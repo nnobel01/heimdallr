@@ -3,14 +3,19 @@ FROM python:3.11-slim
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    cmake \
     build-essential \
-    libopencv-dev \
-    libboost-all-dev \
+    cmake \
+    curl \
     wget \
-    gnupg \
     unzip \
-    && rm -rf /var/lib/apt/lists/*
+    python3-dev \
+    libboost-all-dev \
+    libopenblas-dev \
+    liblapack-dev \
+    libx11-dev \
+    libgtk-3-dev \
+    && pip install --upgrade pip \
+    && pip install dlib face_recognition
 
 # Install Chrome for Selenium
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
