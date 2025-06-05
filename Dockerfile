@@ -34,6 +34,8 @@ RUN apt-get update && apt-get install -y curl wget unzip \
     && chmod +x /usr/local/bin/chromedriver \
     && rm /tmp/chromedriver.zip
 
+COPY images/ /app/images/
+
 # Set working directory
 WORKDIR /app
 
