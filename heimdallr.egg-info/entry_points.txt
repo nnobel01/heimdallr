@@ -1,0 +1,2 @@
+[console_scripts]
+heimdallr = heimdallr.cli:main

@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: heimdallr
+Version: 1.0.0
+Summary: Advanced facial recognition search tool across social media and web
+Author: Heimdallr Team
+Requires-Python: >=3.8
