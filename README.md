@@ -4,7 +4,7 @@
 
 ## Overview
 
-Heimdallr is an advanced facial recognition search tool designed specifically for law enforcement investigations. It searches across multiple platforms including social media sites and web search engines to locate instances of faces and similar individuals.
+Heimdallr is a professional-grade facial recognition search tool designed exclusively for authorized law enforcement investigations. It searches across multiple platforms to locate instances of faces and similar individuals with comprehensive audit trails and evidence chain management.
 
 ## ⚠️ LEGAL DISCLAIMER
 
@@ -19,7 +19,39 @@ Heimdallr is an advanced facial recognition search tool designed specifically fo
 
 By using this tool, operator confirms proper legal authority and training.
 
-## Features
+## 🚀 Quick Installation
+
+### Option 1: Automated Installation (Recommended)
+```bash
+# Download and run installation script
+wget https://raw.githubusercontent.com/your-repo/heimdallr/main/scripts/deploy.sh
+chmod +x deploy.sh
+./deploy.sh
+```
+
+### Option 2: Docker Deployment
+```bash
+# Clone repository
+git clone https://github.com/your-repo/heimdallr.git
+cd heimdallr
+
+# Build and run with Docker
+docker-compose up -d heimdallr
+docker-compose exec heimdallr heimdallr photo.jpg
+```
+
+### Option 3: Manual Installation
+```bash
+# Install system dependencies (Ubuntu/Debian)
+sudo apt update && sudo apt install -y cmake build-essential libopencv-dev
+
+# Clone and install
+git clone https://github.com/your-repo/heimdallr.git
+cd heimdallr
+python3 install.py
+```
+
+## 🎯 Features
 
 ### 🔍 Multi-Platform Search
 - **Instagram**: Public posts, hashtags, profile images
@@ -33,130 +65,138 @@ By using this tool, operator confirms proper legal authority and training.
 - Multiple face detection models (HOG/CNN)
 - Batch processing capabilities
 - Face encoding caching for performance
+- Fallback mode when advanced libraries unavailable
 
 ### 📊 Professional Results
 - **JSON/CSV Export**: Structured data for analysis
-- **Evidence Chain**: Complete audit trail
+- **Evidence Chain**: Complete audit trail with integrity verification
 - **Confidence Scoring**: High/Medium/Low match categories
-- **Case Management**: Unique case IDs and metadata
+- **Case Management**: Unique case IDs and metadata tracking
+- **Investigation Recommendations**: Automated analysis and next steps
 
-### 🛡️ Anti-Detection Features
-- User agent rotation
-- Rate limiting compliance
-- Proxy support ready
-- Headless browser operations
+### 🛡️ Law Enforcement Features
+- **Audit Logging**: Complete operation tracking for legal proceedings
+- **Evidence Chain Management**: Cryptographic integrity verification
+- **Secure Configuration**: Encrypted storage of sensitive data
+- **Case Documentation**: Professional reporting with legal disclaimers
+- **Multi-Operator Support**: User authentication and access controls
 
-## Installation
+### 🔒 Security & Compliance
+- **Anti-Detection**: User agent rotation, rate limiting, proxy support
+- **Encrypted Storage**: Sensitive data protection with AES encryption
+- **Secure Deletion**: Cryptographic wiping of temporary files
+- **Network Security**: TLS verification, timeout controls
+- **Privacy Controls**: Configurable data retention and deletion
 
-### Prerequisites
+## 📋 System Requirements
+
+### Minimum Requirements
 - Python 3.8+
+- 4GB RAM
+- 2GB disk space
+- Internet connection
 - Chrome/Chromium browser
-- CMake (for dlib compilation)
 
-### Install Dependencies
+### Recommended Configuration
+- Python 3.9+
+- 8GB RAM
+- 10GB disk space
+- High-speed internet
+- Dedicated investigation workstation
+
+### Supported Platforms
+- Ubuntu 18.04+ / Debian 10+
+- macOS 10.15+
+- Windows 10+ (with WSL recommended)
+- Docker containers
+
+## ⚙️ Configuration
+
+### Initial Setup Wizard
 ```bash
-# Install system dependencies
-sudo apt-get update
-sudo apt-get install cmake build-essential
-
-# Install Python packages
-pip install -r requirements.txt
-
-# Install Heimdallr
-pip install -e .
+# Run interactive setup wizard
+python3 -m heimdallr.setup_wizard
 ```
 
-## Configuration
+The setup wizard will configure:
+- Agency information and operator credentials
+- Platform preferences and rate limiting
+- API keys for enhanced functionality
+- Security settings and encryption
+- Audit logging and evidence management
 
-### 1. Create Configuration File
-```bash
-# Will be created automatically on first run
-.heimdallr_config.json
-```
+### API Keys (Optional but Recommended)
 
-### 2. API Keys Setup
-Create a `.env` file in the project root:
+#### Twitter API (Enhanced tweet search)
+1. Apply at: https://developer.twitter.com
+2. Create app and generate keys
+3. Add to configuration during setup
 
-```bash
-# Twitter API
-TWITTER_API_KEY=your_api_key
-TWITTER_API_SECRET=your_api_secret
-TWITTER_ACCESS_TOKEN=your_access_token
-TWITTER_ACCESS_TOKEN_SECRET=your_access_token_secret
-TWITTER_BEARER_TOKEN=your_bearer_token
+#### Reddit API (Advanced subreddit search)
+1. Create app at: https://reddit.com/prefs/apps
+2. Note client ID and secret
+3. Configure during setup
 
-# Reddit API
-REDDIT_CLIENT_ID=your_client_id
-REDDIT_CLIENT_SECRET=your_client_secret
+#### Instagram (Risky - may cause suspension)
+- Not recommended for production use
+- Use web scraping mode instead
 
-# Instagram (Optional - uses web scraping by default)
-INSTAGRAM_USERNAME=your_username
-INSTAGRAM_PASSWORD=your_password
-```
+### Configuration Files
+- `~/.heimdallr_config.json` - Main configuration
+- `.env` - API keys and sensitive data
+- `~/.heimdallr_audit.log` - Audit trail (read-only)
 
-### 3. Platform Configuration
-The tool automatically creates a configuration file with:
-- Rate limiting settings
-- Search parameters
-- Output preferences
-- Platform toggles
+## 📖 Usage Guide
 
-## Usage
-
-### Basic Search
+### Basic Commands
 ```bash
 # Simple face search
 heimdallr photo.jpg
 
-# Specify output directory
-heimdallr photo.jpg --output investigation_001
+# Specify output directory and format
+heimdallr photo.jpg --output case_2024_001 --format json
 
-# JSON output only
-heimdallr photo.jpg --format json
+# Set custom similarity threshold
+heimdallr photo.jpg --threshold 85
+
+# Search specific platforms only
+heimdallr photo.jpg --platforms instagram,reddit,google_images
 ```
 
 ### Advanced Options
 ```bash
-# Aggressive search mode (higher speed, higher detection risk)
+# Aggressive search mode (higher speed, detection risk)
 heimdallr photo.jpg --aggressive
 
-# Custom similarity threshold
-heimdallr photo.jpg --threshold 85
-
-# Specific platforms only
-heimdallr photo.jpg --platforms instagram,facebook,reddit
-
-# Verbose logging
+# Verbose logging for debugging
 heimdallr photo.jpg --verbose
+
+# Custom configuration file
+heimdallr photo.jpg --config /path/to/custom/config.json
+
+# Platform-specific searches
+heimdallr photo.jpg --platforms social  # Instagram, Facebook, Twitter, Reddit
+heimdallr photo.jpg --platforms web     # Google Images, reverse search
+heimdallr photo.jpg --platforms instagram,reddit  # Specific platforms
 ```
 
-### Platform-Specific Searches
-```bash
-# Social media only
-heimdallr photo.jpg --platforms social
+### Output Formats
 
-# Web search only
-heimdallr photo.jpg --platforms web
-
-# Specific combination
-heimdallr photo.jpg --platforms instagram,google_images
-```
-
-## Output Format
-
-### JSON Structure
+#### JSON Output (Default)
 ```json
 {
   "case_metadata": {
     "case_id": "HEIMDALLR-A1B2C3D4",
     "timestamp": "2024-01-15T10:30:00Z",
-    "operator": "REDACTED",
-    "legal_authority": "TBD"
+    "operator": "Badge123",
+    "agency": "Metro Police Dept",
+    "legal_authority": "Warrant 2024-001"
   },
   "search_summary": {
     "total_platforms_searched": 5,
     "total_matches_found": 12,
-    "search_duration": 127.3
+    "search_duration": 127.3,
+    "high_confidence_matches": 3
   },
   "high_confidence_matches": [
     {
@@ -164,124 +204,255 @@ heimdallr photo.jpg --platforms instagram,google_images
       "platform": "instagram",
       "similarity_score": 96.8,
       "url": "https://instagram.com/p/xyz",
-      "image_url": "https://...",
-      "context": "Instagram post",
-      "chain_of_custody": {...}
+      "discovery_timestamp": "2024-01-15T10:32:15Z",
+      "chain_of_custody": {
+        "discovered_by": "HEIMDALLR",
+        "collection_method": "automated_search",
+        "verification_needed": true
+      }
     }
   ],
-  "investigation_recommendations": [...]
+  "evidence_chain": [...],
+  "investigation_recommendations": [
+    "PRIORITY: 3 high-confidence matches (95%+) require immediate manual verification",
+    "LEGAL: Ensure proper legal authority before acting on any matches"
+  ]
 }
 ```
 
-### CSV Output
+#### CSV Output
 Spreadsheet-friendly format with columns:
-- Evidence_ID
-- Platform
-- Similarity_Score
-- Confidence_Category
-- URL
-- Discovery_Time
-- Verification_Status
+- Evidence_ID, Platform, Similarity_Score, Confidence_Category
+- URL, Image_URL, Context, Discovery_Time
+- Verification_Status, Notes
 
-## Law Enforcement Features
+## 🔍 Investigation Workflow
 
-### Case Management
-- Unique case IDs for tracking
-- Complete audit trail
-- Evidence chain documentation
-- Operator identification fields
+### 1. Case Preparation
+- Obtain proper legal authority (warrant, court order, etc.)
+- Document investigative necessity
+- Prepare high-quality subject photographs
+- Configure case-specific parameters
 
-### Investigation Workflow
-1. **Initial Search**: Run comprehensive search across all platforms
-2. **Results Review**: Examine high-confidence matches first
-3. **Manual Verification**: Verify all matches before acting
-4. **Documentation**: Export results for case files
-5. **Follow-up**: Use leads for further investigation
+### 2. Search Execution
+```bash
+# Start comprehensive search
+heimdallr subject_photo.jpg --output case_2024_001 --format both
 
-### Best Practices
-- Always obtain proper legal authority before searching
-- Document the investigative need and legal basis
+# Monitor progress and logs
+tail -f ~/.heimdallr_audit.log
+```
+
+### 3. Results Analysis
+- Review high-confidence matches first (95%+)
+- Examine medium-confidence matches (85-94%)
+- Follow investigation recommendations
+- Document verification steps
+
+### 4. Evidence Management
+- Export results in both JSON and CSV formats
+- Maintain chain of custody documentation
 - Verify all matches through independent means
-- Maintain chain of custody for digital evidence
-- Follow agency policies for digital investigations
+- Prepare reports for legal proceedings
 
-## Rate Limiting & Ethics
+### 5. Case Documentation
+- Save complete audit trail
+- Document verification procedures
+- Prepare investigative summary
+- Archive evidence according to agency policy
 
-### Respectful Scraping
-- Built-in rate limiting for all platforms
-- Respects robots.txt files
-- Randomized delays between requests
-- User agent rotation
-
-### Privacy Considerations
-- Only searches publicly available content
-- Does not attempt to bypass privacy settings
-- Includes warnings about verification needs
-- Maintains audit logs for accountability
-
-## Troubleshooting
+## 🛠️ Troubleshooting
 
 ### Common Issues
-1. **No faces detected**: Ensure clear, frontal face images
-2. **API rate limits**: Wait and retry, or use less aggressive settings
-3. **Driver errors**: Update Chrome and chromedriver
-4. **Network issues**: Check proxy settings and connectivity
 
-### Platform-Specific Notes
-- **Facebook**: Very limited due to privacy restrictions
-- **Instagram**: Best results with hashtag searches
-- **Twitter**: Requires API keys for full functionality
-- **Reddit**: Most accessible, good for missing persons
-- **Google Images**: Most comprehensive reverse search
+#### "No faces detected"
+- Ensure clear, frontal face images
+- Check image quality and resolution
+- Try different face detection models
+- Verify image file integrity
 
-## Security Notes
+#### "Rate limited" errors
+- Reduce search aggressiveness
+- Increase rate limiting delays
+- Use different IP address/proxy
+- Wait and retry later
 
-### Data Handling
-- Face encodings are cached locally only
-- No data transmitted to third parties
-- Results stored locally by default
-- Secure deletion of temporary files
+#### API authentication failures
+- Verify API keys in configuration
+- Check key expiration dates
+- Confirm account status
+- Review API usage limits
+
+#### Selenium/Browser errors
+- Update Chrome/Chromium browser
+- Install latest ChromeDriver
+- Check browser permissions
+- Verify network connectivity
+
+### Performance Optimization
+
+#### For Large-Scale Operations
+```bash
+# Use aggressive mode with caution
+heimdallr photo.jpg --aggressive --platforms instagram,reddit
+
+# Batch processing multiple subjects
+for photo in case_photos/*.jpg; do
+    heimdallr "$photo" --output "results/$(basename $photo .jpg)"
+done
+```
+
+#### Memory and CPU Optimization
+- Close unnecessary applications
+- Use SSD storage for cache
+- Increase virtual memory if needed
+- Consider distributed processing
+
+### Error Recovery
+- Check audit logs for detailed error information
+- Verify network connectivity and firewall settings
+- Restart services if browser drivers crash
+- Use fallback mode if face recognition fails
+
+## 📊 Platform-Specific Notes
+
+### Instagram
+- **Strengths**: Large user base, good image quality
+- **Limitations**: Aggressive anti-scraping, requires careful rate limiting
+- **Best Practices**: Use hashtag searches, avoid direct profile access
+
+### Facebook
+- **Strengths**: Comprehensive user profiles, marketplace listings
+- **Limitations**: Heavy restrictions on automated access
+- **Best Practices**: Focus on public pages and marketplace
+
+### Twitter/X
+- **Strengths**: Real-time content, API access available
+- **Limitations**: Rate limiting, API costs
+- **Best Practices**: Use API when possible, focus on image tweets
+
+### Reddit
+- **Strengths**: Open communities, missing persons subreddits
+- **Limitations**: Volunteer moderators, varied image quality
+- **Best Practices**: Search help and missing persons communities
+
+### Google Images
+- **Strengths**: Comprehensive reverse search, high accuracy
+- **Limitations**: CAPTCHA challenges, detection risk
+- **Best Practices**: Use as primary search method, respect rate limits
+
+## 🔒 Security Considerations
 
 ### Operational Security
+- Use dedicated investigation workstations
+- Enable full disk encryption
 - Use VPN for sensitive investigations
-- Rotate user agents and IP addresses
+- Regularly update software components
 - Monitor for detection/blocking
-- Follow agency cybersecurity policies
 
-## Legal Compliance
+### Data Protection
+- Encrypt all configuration files
+- Secure API keys and credentials
+- Implement secure deletion procedures
+- Maintain access logs and audit trails
+- Follow agency data retention policies
 
-### Required Documentation
-- Legal authority for the search
-- Investigative necessity
-- Platforms searched and methods used
-- Results obtained and verification status
-- Chain of custody for evidence
+### Legal Compliance
+- Document legal authority for each search
+- Maintain chain of custody records
+- Respect platform terms of service
+- Consider international jurisdiction issues
+- Prepare for legal discovery requests
 
-### Limitations
-- Tool provides investigative leads only
-- All results require manual verification
-- No guarantee of accuracy or completeness
-- Subject to platform terms of service
-- May produce false positives/negatives
+### Privacy Safeguards
+- Only search publicly available content
+- Avoid collection of unrelated data
+- Implement data minimization practices
+- Provide notice when legally required
+- Respect constitutional protections
 
-## Support & Updates
+## 📚 Training and Certification
 
-### Maintenance
-- Regular updates for platform changes
-- Security patches for dependencies
-- Performance optimizations
-- New platform integrations
-
-### Training
-- Operator training recommended
+### Operator Training Requirements
 - Understanding of facial recognition limitations
 - Legal and ethical guidelines
-- Technical troubleshooting
+- Technical troubleshooting skills
+- Evidence handling procedures
+- Report writing and documentation
+
+### Recommended Training Program
+1. **Technical Foundation** (8 hours)
+   - Tool capabilities and limitations
+   - Platform-specific search strategies
+   - Configuration and customization
+   - Troubleshooting common issues
+
+2. **Legal and Ethical Training** (4 hours)
+   - Constitutional considerations
+   - Privacy laws and regulations
+   - Evidence handling requirements
+   - Documentation standards
+
+3. **Practical Exercises** (8 hours)
+   - Case study walkthroughs
+   - Hands-on search practice
+   - Report preparation
+   - Quality assurance procedures
+
+### Certification Maintenance
+- Annual recertification required
+- Continuing education on new platforms
+- Legal update training
+- Technical skills assessment
+
+## 📞 Support and Updates
+
+### Technical Support
+- **Documentation**: Complete user manual and API reference
+- **Issue Tracking**: GitHub issues for bug reports
+- **Community**: Law enforcement user community
+- **Training**: Professional training programs available
+
+### Maintenance Schedule
+- **Monthly**: Security patches and bug fixes
+- **Quarterly**: Platform adapter updates
+- **Annually**: Major feature releases
+- **Emergency**: Critical security updates
+
+### Version Control
+- Semantic versioning (MAJOR.MINOR.PATCH)
+- Automated security scanning
+- Regression testing for all updates
+- Rollback procedures for failed updates
+
+## 📜 License and Distribution
+
+### Licensing
+- Restricted to authorized law enforcement agencies
+- Requires signed license agreement
+- Subject to export control regulations
+- Non-transferable between agencies
+
+### Distribution Control
+- Secure distribution channels only
+- Digital signature verification required
+- Access logging and audit trails
+- Revocation capabilities for compromised installations
 
 ---
 
 **Version**: 1.0.0  
 **Last Updated**: January 2024  
-**Classification**: Law Enforcement Use Only
+**Classification**: Law Enforcement Use Only  
+**Support**: [Contact your agency's digital forensics unit]
 
-For technical support or training requests, contact your agency's digital forensics unit.
+## 🚨 Emergency Contact
+
+For urgent technical issues during active investigations:
+- Technical Hotline: [Agency Specific]
+- Emergency Escalation: [24/7 Support]
+- Legal Consultation: [Agency Legal Counsel]
+
+---
+
+*This software is provided for law enforcement use only. Unauthorized use, modification, or distribution is strictly prohibited and may be subject to criminal and civil penalties.*
