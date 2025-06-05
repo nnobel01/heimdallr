@@ -151,18 +151,40 @@ def display_results_summary(results):
 def save_results(results, output_dir, format_type, image_path):
     """Save results in specified format(s)"""
     base_name = Path(image_path).stem
-    timestamp = results['search_metadata']['timestamp'].replace(':', '-')
+    timestamp = results.get('case_metadata', {}).get('timestamp', '').replace(':', '-')
+    if not timestamp:
+        from datetime import datetime
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     
     if format_type in ['json', 'both']:
         json_file = output_dir / f"heimdallr_results_{base_name}_{timestamp}.json"
         with open(json_file, 'w', encoding='utf-8') as f:
-            json.dump(results, f, indent=2, ensure_ascii=False)
+            json.dump(results, f, indent=2, ensure_ascii=False, default=str)
         console.print(f"📄 [blue]JSON results saved: {json_file}[/blue]")
     
     if format_type in ['csv', 'both']:
         csv_file = output_dir / f"heimdallr_results_{base_name}_{timestamp}.csv"
-        processor = ResultsProcessor()
-        processor.save_csv(results, csv_file)
+        # Simple CSV creation for now
+        import csv
+        with open(csv_file, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['Platform', 'Similarity_Score', 'URL', 'Context'])
+            
+            # Extract matches from all confidence levels
+            all_matches = (
+                results.get('high_confidence_matches', []) +
+                results.get('medium_confidence_matches', []) +
+                results.get('low_confidence_matches', [])
+            )
+            
+            for match in all_matches:
+                writer.writerow([
+                    match.get('platform', ''),
+                    match.get('similarity_score', ''),
+                    match.get('url', ''),
+                    match.get('context', '')
+                ])
+        
         console.print(f"📊 [blue]CSV results saved: {csv_file}[/blue]")
 
 if __name__ == '__main__':
