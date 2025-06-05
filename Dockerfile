@@ -3,19 +3,21 @@ FROM python:3.11-slim
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    cmake \
     curl \
-    wget \
+    build-essential \
     unzip \
+    wget \
     python3-dev \
     libboost-all-dev \
     libopenblas-dev \
     liblapack-dev \
     libx11-dev \
     libgtk-3-dev \
-    && pip install --upgrade pip \
-    && pip install dlib face_recognition
+    && curl -LO https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-linux-x86_64.sh \
+    && mkdir /opt/cmake \
+    && sh cmake-3.26.4-linux-x86_64.sh --skip-license --prefix=/opt/cmake \
+    && ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake \
+    && rm cmake-3.26.4-linux-x86_64.sh
 
 # Install Chrome for Selenium
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
