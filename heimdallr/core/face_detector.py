@@ -17,13 +17,15 @@ from ..utils.logger import get_logger
 logger = get_logger()
 
 class FaceDetector:
-    def __init__(self, model="hog"):
+    def __init__(self, threshold: float = 0.80, model="hog"):
         """
         Initialize face detector
         
         Args:
+            threshold: Similarity threshold (0.0-1.0)
             model: Face detection model to use ('hog' or 'cnn')
         """
+        self.threshold = threshold
         self.model = model
         self.logger = logger
 
