@@ -24,7 +24,7 @@ By using this tool, operator confirms proper legal authority and training.
 ### Option 1: Automated Installation (Recommended)
 ```bash
 # Download and run installation script
-wget https://raw.githubusercontent.com/your-repo/heimdallr/main/scripts/deploy.sh
+wget https://raw.githubusercontent.com/nnobel01/heimdallr/main/scripts/deploy.sh
 chmod +x deploy.sh
 ./deploy.sh
 ```
@@ -32,7 +32,7 @@ chmod +x deploy.sh
 ### Option 2: Docker Deployment
 ```bash
 # Clone repository
-git clone https://github.com/your-repo/heimdallr.git
+git clone https://github.com/nnobel01/heimdallr.git
 cd heimdallr
 
 # Build and run with Docker
@@ -46,7 +46,7 @@ docker-compose exec heimdallr heimdallr photo.jpg
 sudo apt update && sudo apt install -y cmake build-essential libopencv-dev
 
 # Clone and install
-git clone https://github.com/your-repo/heimdallr.git
+git clone https://github.com/nnobel01/heimdallr.git
 cd heimdallr
 python3 install.py
 ```
@@ -371,47 +371,13 @@ done
 - Provide notice when legally required
 - Respect constitutional protections
 
-## 📚 Training and Certification
-
-### Operator Training Requirements
-- Understanding of facial recognition limitations
-- Legal and ethical guidelines
-- Technical troubleshooting skills
-- Evidence handling procedures
-- Report writing and documentation
-
-### Recommended Training Program
-1. **Technical Foundation** (8 hours)
-   - Tool capabilities and limitations
-   - Platform-specific search strategies
-   - Configuration and customization
-   - Troubleshooting common issues
-
-2. **Legal and Ethical Training** (4 hours)
-   - Constitutional considerations
-   - Privacy laws and regulations
-   - Evidence handling requirements
-   - Documentation standards
-
-3. **Practical Exercises** (8 hours)
-   - Case study walkthroughs
-   - Hands-on search practice
-   - Report preparation
-   - Quality assurance procedures
-
-### Certification Maintenance
-- Annual recertification required
-- Continuing education on new platforms
-- Legal update training
-- Technical skills assessment
 
 ## 📞 Support and Updates
 
 ### Technical Support
 - **Documentation**: Complete user manual and API reference
 - **Issue Tracking**: GitHub issues for bug reports
-- **Community**: Law enforcement user community
-- **Training**: Professional training programs available
+- **Training**: Courses to be provided by Street Cop Training
 
 ### Maintenance Schedule
 - **Monthly**: Security patches and bug fixes
@@ -441,17 +407,10 @@ done
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: January 2024  
+**Version**: A0.1.01 
+**Last Updated**: June 2025 
 **Classification**: Law Enforcement Use Only  
-**Support**: [Contact your agency's digital forensics unit]
-
-## 🚨 Emergency Contact
-
-For urgent technical issues during active investigations:
-- Technical Hotline: [Agency Specific]
-- Emergency Escalation: [24/7 Support]
-- Legal Consultation: [Agency Legal Counsel]
+**Support**: nathaniel.nobel@iacis.com
 
 ---
 
