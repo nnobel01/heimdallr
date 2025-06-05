@@ -1,0 +1,31 @@
+{
+  "platforms": {
+    "instagram": {
+      "enabled": true,
+      "rate_limit_delay": 2.0
+    },
+    "facebook": {
+      "enabled": true,
+      "rate_limit_delay": 3.0
+    },
+    "twitter": {
+      "enabled": true,
+      "rate_limit_delay": 1.5
+    },
+    "reddit": {
+      "enabled": true,
+      "rate_limit_delay": 1.0
+    },
+    "google_images": {
+      "enabled": true,
+      "rate_limit_delay": 1.0
+    }
+  },
+  "scraping": {
+    "user_agents": [
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    ],
+    "timeout": 30,
+    "headless_browser": true
+  }
+}
