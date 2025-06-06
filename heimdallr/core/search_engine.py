@@ -45,15 +45,35 @@ class SearchEngine:
         # Threading for parallel searches
         self.max_workers = 6 if aggressive_mode else 3
         
-    def _initialize_dummy_scrapers(self, platforms: str) -> Dict[str, Any]:
-        """Initialize dummy scrapers for testing"""
-        return {
-            "instagram": DummyScraper("instagram"),
-            "facebook": DummyScraper("facebook"),
-            "twitter": DummyScraper("twitter"),
-            "reddit": DummyScraper("reddit"),
-            "google_images": DummyScraper("google_images")
-        }
+ #   def _initialize_dummy_scrapers(self, platforms: str) -> Dict[str, Any]:
+ #       """Initialize dummy scrapers for testing"""
+ #       return {
+ #           "instagram": DummyScraper("instagram"),
+ #           "facebook": DummyScraper("facebook"),
+ #           "twitter": DummyScraper("twitter"),
+ #           "reddit": DummyScraper("reddit"),
+ #           "google_images": DummyScraper("google_images")
+ #       }
+
+    def _initialize_real_scrapers(self, platforms: str) -> Dict[str, Any]:
+    """Initialize real scrapers"""
+    scraper_map = {}
+
+    if SCRAPERS_AVAILABLE:
+        if platforms in ("all", "social"):
+            scraper_map.update({
+                "instagram": InstagramScraper(self.config),
+                "facebook": FacebookScraper(self.config),
+                "twitter": TwitterScraper(self.config),
+                "reddit": RedditScraper(self.config),
+            })
+        if platforms in ("all", "web"):
+            scraper_map["google_images"] = GoogleImagesScraper(self.config)
+    else:
+        self.logger.warning("No scrapers available, falling back to dummy mode.")
+        return self._initialize_dummy_scrapers(platforms)
+
+    return scraper_map
     
     def search_all_platforms(self, faces_data: Dict[str, Any], 
                            progress_callback: Optional[Callable] = None) -> Dict[str, Any]:
