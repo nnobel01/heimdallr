@@ -40,8 +40,9 @@ class SearchEngine:
         self.logger = logger
         
         # For now, create dummy scrapers for testing
-        self.scrapers = self._initialize_dummy_scrapers(platforms)
-        
+        #self.scrapers = self._initialize_dummy_scrapers(platforms)
+
+        self.scrpaers = self._initialize_real_scrapers(platforms)
         # Threading for parallel searches
         self.max_workers = 6 if aggressive_mode else 3
         
