@@ -21,6 +21,9 @@ setup(
         "console_scripts": [
             "heimdallr=heimdallr.cli:main",
         ],
+        "gui_scripts": [
+            "heimdallr-gui=heimdallr.gui:main",
+        ]
     },
     python_requires=">=3.8",
 )
