@@ -1,0 +1,331 @@
+{
+  "case_metadata": {
+    "case_id": "HEIMDALLR-F5C0CAFF",
+    "timestamp": "2025-06-05T23:46:34.634690",
+    "operator": "REDACTED",
+    "jurisdiction": "TBD",
+    "original_image": "images/freeman.jpg",
+    "faces_detected": 1,
+    "image_hash": "a336d5d0c459c1ef0c7bb26678d545bd21f806616b500947cf0b300a60558e55",
+    "processing_version": "1.0.0",
+    "legal_authority": "TBD"
+  },
+  "search_summary": {
+    "total_platforms_searched": 5,
+    "successful_platforms": 5,
+    "failed_platforms": 0,
+    "total_matches_found": 5,
+    "search_duration": 5.0,
+    "aggressive_mode_used": false,
+    "platforms_searched": [
+      "instagram",
+      "facebook",
+      "twitter",
+      "reddit",
+      "google_images"
+    ]
+  },
+  "high_confidence_matches": [],
+  "medium_confidence_matches": [
+    {
+      "platform": "instagram",
+      "similarity_score": 85.5,
+      "url": "https://instagram.com/test/123",
+      "image_url": "https://instagram.com/images/test.jpg",
+      "context": "instagram test result",
+      "timestamp": 1749167190.6291528,
+      "verified": false,
+      "evidence_id": "INSTAGRAM-001",
+      "discovery_timestamp": "2025-06-05T23:46:34.635203",
+      "chain_of_custody": {
+        "discovered_by": "HEIMDALLR",
+        "platform": "instagram",
+        "collection_method": "automated_search",
+        "verification_needed": true
+      }
+    },
+    {
+      "platform": "facebook",
+      "similarity_score": 85.5,
+      "url": "https://facebook.com/test/123",
+      "image_url": "https://facebook.com/images/test.jpg",
+      "context": "facebook test result",
+      "timestamp": 1749167191.6296797,
+      "verified": false,
+      "evidence_id": "FACEBOOK-001",
+      "discovery_timestamp": "2025-06-05T23:46:34.635212",
+      "chain_of_custody": {
+        "discovered_by": "HEIMDALLR",
+        "platform": "facebook",
+        "collection_method": "automated_search",
+        "verification_needed": true
+      }
+    },
+    {
+      "platform": "twitter",
+      "similarity_score": 85.5,
+      "url": "https://twitter.com/test/123",
+      "image_url": "https://twitter.com/images/test.jpg",
+      "context": "twitter test result",
+      "timestamp": 1749167192.6300838,
+      "verified": false,
+      "evidence_id": "TWITTER-001",
+      "discovery_timestamp": "2025-06-05T23:46:34.635216",
+      "chain_of_custody": {
+        "discovered_by": "HEIMDALLR",
+        "platform": "twitter",
+        "collection_method": "automated_search",
+        "verification_needed": true
+      }
+    },
+    {
+      "platform": "reddit",
+      "similarity_score": 85.5,
+      "url": "https://reddit.com/test/123",
+      "image_url": "https://reddit.com/images/test.jpg",
+      "context": "reddit test result",
+      "timestamp": 1749167193.6305795,
+      "verified": false,
+      "evidence_id": "REDDIT-001",
+      "discovery_timestamp": "2025-06-05T23:46:34.635221",
+      "chain_of_custody": {
+        "discovered_by": "HEIMDALLR",
+        "platform": "reddit",
+        "collection_method": "automated_search",
+        "verification_needed": true
+      }
+    },
+    {
+      "platform": "google_images",
+      "similarity_score": 85.5,
+      "url": "https://google_images.com/test/123",
+      "image_url": "https://google_images.com/images/test.jpg",
+      "context": "google_images test result",
+      "timestamp": 1749167194.6315074,
+      "verified": false,
+      "evidence_id": "GOOGLE_IMAGES-001",
+      "discovery_timestamp": "2025-06-05T23:46:34.635229",
+      "chain_of_custody": {
+        "discovered_by": "HEIMDALLR",
+        "platform": "google_images",
+        "collection_method": "automated_search",
+        "verification_needed": true
+      }
+    }
+  ],
+  "low_confidence_matches": [],
+  "platform_results": {
+    "instagram": {
+      "platform": "instagram",
+      "status": "success",
+      "total_matches": 1,
+      "valid_matches": 1,
+      "matches": [
+        {
+          "platform": "instagram",
+          "similarity_score": 85.5,
+          "url": "https://instagram.com/test/123",
+          "image_url": "https://instagram.com/images/test.jpg",
+          "context": "instagram test result",
+          "timestamp": 1749167190.6291528,
+          "verified": false,
+          "evidence_id": "INSTAGRAM-001",
+          "discovery_timestamp": "2025-06-05T23:46:34.635203",
+          "chain_of_custody": {
+            "discovered_by": "HEIMDALLR",
+            "platform": "instagram",
+            "collection_method": "automated_search",
+            "verification_needed": true
+          }
+        }
+      ],
+      "search_time": 1749167190.6291635,
+      "error": null
+    },
+    "facebook": {
+      "platform": "facebook",
+      "status": "success",
+      "total_matches": 1,
+      "valid_matches": 1,
+      "matches": [
+        {
+          "platform": "facebook",
+          "similarity_score": 85.5,
+          "url": "https://facebook.com/test/123",
+          "image_url": "https://facebook.com/images/test.jpg",
+          "context": "facebook test result",
+          "timestamp": 1749167191.6296797,
+          "verified": false,
+          "evidence_id": "FACEBOOK-001",
+          "discovery_timestamp": "2025-06-05T23:46:34.635212",
+          "chain_of_custody": {
+            "discovered_by": "HEIMDALLR",
+            "platform": "facebook",
+            "collection_method": "automated_search",
+            "verification_needed": true
+          }
+        }
+      ],
+      "search_time": 1749167191.629685,
+      "error": null
+    },
+    "twitter": {
+      "platform": "twitter",
+      "status": "success",
+      "total_matches": 1,
+      "valid_matches": 1,
+      "matches": [
+        {
+          "platform": "twitter",
+          "similarity_score": 85.5,
+          "url": "https://twitter.com/test/123",
+          "image_url": "https://twitter.com/images/test.jpg",
+          "context": "twitter test result",
+          "timestamp": 1749167192.6300838,
+          "verified": false,
+          "evidence_id": "TWITTER-001",
+          "discovery_timestamp": "2025-06-05T23:46:34.635216",
+          "chain_of_custody": {
+            "discovered_by": "HEIMDALLR",
+            "platform": "twitter",
+            "collection_method": "automated_search",
+            "verification_needed": true
+          }
+        }
+      ],
+      "search_time": 1749167192.6300917,
+      "error": null
+    },
+    "reddit": {
+      "platform": "reddit",
+      "status": "success",
+      "total_matches": 1,
+      "valid_matches": 1,
+      "matches": [
+        {
+          "platform": "reddit",
+          "similarity_score": 85.5,
+          "url": "https://reddit.com/test/123",
+          "image_url": "https://reddit.com/images/test.jpg",
+          "context": "reddit test result",
+          "timestamp": 1749167193.6305795,
+          "verified": false,
+          "evidence_id": "REDDIT-001",
+          "discovery_timestamp": "2025-06-05T23:46:34.635221",
+          "chain_of_custody": {
+            "discovered_by": "HEIMDALLR",
+            "platform": "reddit",
+            "collection_method": "automated_search",
+            "verification_needed": true
+          }
+        }
+      ],
+      "search_time": 1749167193.6305892,
+      "error": null
+    },
+    "google_images": {
+      "platform": "google_images",
+      "status": "success",
+      "total_matches": 1,
+      "valid_matches": 1,
+      "matches": [
+        {
+          "platform": "google_images",
+          "similarity_score": 85.5,
+          "url": "https://google_images.com/test/123",
+          "image_url": "https://google_images.com/images/test.jpg",
+          "context": "google_images test result",
+          "timestamp": 1749167194.6315074,
+          "verified": false,
+          "evidence_id": "GOOGLE_IMAGES-001",
+          "discovery_timestamp": "2025-06-05T23:46:34.635229",
+          "chain_of_custody": {
+            "discovered_by": "HEIMDALLR",
+            "platform": "google_images",
+            "collection_method": "automated_search",
+            "verification_needed": true
+          }
+        }
+      ],
+      "search_time": 1749167194.6315112,
+      "error": null
+    }
+  },
+  "evidence_chain": [
+    {
+      "step": 1,
+      "action": "Original Image Processing",
+      "timestamp": "2025-06-05T23:46:34.635088",
+      "details": {
+        "image_path": "images/freeman.jpg",
+        "faces_detected": 1,
+        "processing_method": "face_recognition library",
+        "image_dimensions": [
+          400,
+          267
+        ]
+      },
+      "integrity_hash": "a336d5d0c459c1ef0c7bb26678d545bd21f806616b500947cf0b300a60558e55"
+    },
+    {
+      "step": 2,
+      "action": "Platform Search - Instagram",
+      "timestamp": 1749167190.6291635,
+      "details": {
+        "platform": "instagram",
+        "status": "success",
+        "matches_found": 1,
+        "search_method": "automated_scraping"
+      }
+    },
+    {
+      "step": 3,
+      "action": "Platform Search - Facebook",
+      "timestamp": 1749167191.629685,
+      "details": {
+        "platform": "facebook",
+        "status": "success",
+        "matches_found": 1,
+        "search_method": "automated_scraping"
+      }
+    },
+    {
+      "step": 4,
+      "action": "Platform Search - Twitter",
+      "timestamp": 1749167192.6300917,
+      "details": {
+        "platform": "twitter",
+        "status": "success",
+        "matches_found": 1,
+        "search_method": "automated_scraping"
+      }
+    },
+    {
+      "step": 5,
+      "action": "Platform Search - Reddit",
+      "timestamp": 1749167193.6305892,
+      "details": {
+        "platform": "reddit",
+        "status": "success",
+        "matches_found": 1,
+        "search_method": "automated_scraping"
+      }
+    },
+    {
+      "step": 6,
+      "action": "Platform Search - Google_Images",
+      "timestamp": 1749167194.6315112,
+      "details": {
+        "platform": "google_images",
+        "status": "success",
+        "matches_found": 1,
+        "search_method": "automated_scraping"
+      }
+    }
+  ],
+  "legal_disclaimer": "\n        LEGAL DISCLAIMER FOR LAW ENFORCEMENT USE:\n        \n        1. This tool is intended for use by authorized law enforcement personnel only\n        2. All searches must be conducted under proper legal authority\n        3. Results are investigative leads only and require manual verification\n        4. Respect applicable privacy laws and constitutional protections\n        5. Maintain proper chain of custody for any evidence derived from this tool\n        6. Document all uses in accordance with agency policies\n        7. Results may include false positives - verify before acting\n        \n        By using this tool, operator confirms proper legal authority and training.\n        ",
+  "investigation_recommendations": [
+    "LEGAL: Ensure proper legal authority before acting on any matches",
+    "VERIFICATION: All matches require manual verification before use as evidence"
+  ]
+}

@@ -241,47 +241,80 @@ class GoogleImagesScraper(BaseScraper):
         
         return matches
     
-    def _extract_search_results(self, face_data: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """Extract and analyze search results from current page"""
+    def _extract_search_results(self, face_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Extracts and analyzes search results for facial matches and generates
+        investigative leads (potential names and profile URLs).
+        """
         matches = []
-        
+        leads = {
+            "potential_names": set(),
+            "profile_urls": set()
+        }
+
         try:
-            # Find image result elements
-            image_elements = self.driver.find_elements(By.CSS_SELECTOR, "[data-ri] img")
-            
-            max_results = 20 if self.aggressive_mode else 10
-            
-            for i, img_element in enumerate(image_elements[:max_results]):
+            # Use a more stable selector if possible. 'div.g' is a common container for Google results.
+            # You may need to inspect the current Google results page to find the best top-level container for each result.
+            result_containers = self.driver.find_elements(By.CSS_SELECTOR, "div.g")
+            if not result_containers:
+                # Fallback to another potential selector if the first one fails
+                result_containers = self.driver.find_elements(By.CSS_SELECTOR, "div.tF2Cxc")
+
+
+            for container in result_containers:
+                # --- Facial Match Logic ---
                 try:
-                    # Get image source
+                    img_element = container.find_element(By.TAG_NAME, "img")
                     img_src = img_element.get_attribute("src")
-                    if not img_src or img_src.startswith("data:"):
-                        continue
+
+                    if img_src and not img_src.startswith("data:"):
+                        parent_link = container.find_element(By.TAG_NAME, "a")
+                        result_url = parent_link.get_attribute("href") if parent_link else ""
                     
-                    # Get parent link for context
-                    parent_link = img_element.find_element(By.XPATH, "./ancestor::a")
-                    result_url = parent_link.get_attribute("href") if parent_link else ""
-                    
-                    # Analyze image for face matches
-                    match_data = self._analyze_result_image(
-                        img_src, result_url, face_data, f"Google result #{i+1}"
+                        match_data = self._analyze_result_image(
+                            img_src, result_url, face_data, "Google Result"
                     )
-                    
                     if match_data:
                         matches.append(match_data)
+                except Exception:
+                # It's normal for some containers not to have images, so we can ignore these errors.
+                    pass
+
+            # --- Lead Generation Logic ---
+            try:
+                # Extract text from the result for context
+                # The h3 tag usually contains the main title of the result
+                title_text = container.find_element(By.TAG_NAME, "h3").text
                 
-                except Exception as e:
-                    self.logger.debug(f"Error processing image result: {str(e)}")
-                    continue
+                # A simple regex to find things that look like names.
+                # This can be tuned for better accuracy.
+                found_names = re.findall(r'([A-Z][a-z]+(?: [A-Z][a-z]+)?)', title_text)
+                for name in found_names:
+                    # Filter out common non-name words if necessary
+                    if len(name.split()) > 1: # Prioritize multi-word names
+                        leads["potential_names"].add(name)
+
+                # Extract the primary link from the result
+                link_element = container.find_element(By.TAG_NAME, "a")
+                href = link_element.get_attribute("href")
                 
-                # Rate limiting
-                if not self.aggressive_mode and i % 5 == 0:
-                    time.sleep(1)
-        
+                # Check if the link is a potential social media profile
+                if href:
+                    if any(domain in href for domain in ["facebook.com/", "twitter.com/", "instagram.com/", "linkedin.com/in/"]):
+                        leads["profile_urls"].add(href)
+            except Exception:
+                # Ignore errors if a container doesn't have the expected text or link structure.
+                pass
+
         except Exception as e:
-            self.logger.debug(f"Error extracting search results: {str(e)}")
-        
-        return matches
+            self.logger.error(f"Could not extract search results: {str(e)}")
+
+    # Convert sets to lists for JSON serialization
+        leads["potential_names"] = list(leads["potential_names"])
+        leads["profile_urls"] = list(leads["profile_urls"])
+
+    # Return a dictionary containing both direct image matches and the new leads
+        return {"matches": matches, "leads": leads}
     
     def _extract_similar_images(self, face_data: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Extract similar images from Google's visually similar section"""
