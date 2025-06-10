@@ -50,21 +50,36 @@ class TwitterScraper(BaseScraper):
         except Exception as e:
             self.logger.error(f"Failed to setup Twitter API: {str(e)}")
     
-    def search_face(self, face_data: Dict[str, Any]) -> Dict[str, Any]:
+    def search_face(self, face_data: Dict[str, Any], leads: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
-        Search for face matches on Twitter/X
-        
-        Args:
-            face_data: Face detection data with encoding
-            
-        Returns:
-            Dictionary with search results and matches
+        Search for face matches on Twitter/X.
+        If leads (names, URLs) are provided, it will perform a targeted search.
         """
         try:
             self._log_search_attempt("Face Search", "Twitter image posts")
             
             matches = []
+
+            # --- Targeted Search Logic ---
+            # If leads are provided, use them to perform targeted searches.
+            if leads:
+                self.logger.info("Conducting targeted search on Twitter using leads.")
+                if leads.get("potential_names"):
+                    for name in leads["potential_names"]:
+                        # This is a placeholder for searching for users by name.
+                        # The actual implementation would call a method like self._search_user_by_name_api(name, face_data)
+                        self.logger.info(f"Targeted search for name: {name}")
+
+                if leads.get("profile_urls"):
+                    for url in leads["profile_urls"]:
+                        if "twitter.com" in url:
+                            # This is a placeholder for scraping a specific profile URL.
+                            # The actual implementation would call a method like self._scrape_profile_url(url, face_data)
+                            self.logger.info(f"Targeted search for URL: {url}")
             
+            # --- Broad Search Logic ---
+            # The original broad search methods will run if no leads are found,
+            # or can be modified to supplement the targeted search.
             if self.api or self.client:
                 # API-based search methods
                 search_methods = [

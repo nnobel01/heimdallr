@@ -43,15 +43,17 @@ class BaseScraper(ABC):
         self.found_matches = []
     
     @abstractmethod
-    def search_face(self, face_data: Dict[str, Any]) -> Dict[str, Any]:
+    def search_face(self, face_data: Dict[str, Any], leads: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
-        Search for the given face on this platform
-        
+        Search for the given face on this platform.
+
         Args:
-            face_data: Face detection data including encoding and metadata
-            
+            face_data: Face detection data including encoding and metadata.
+            leads: Optional dictionary of leads (names, URLs) from other platforms
+                   to conduct a targeted search.
+
         Returns:
-            Dictionary containing search results and matches
+            Dictionary containing search results and matches.
         """
         pass
     

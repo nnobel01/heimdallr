@@ -34,20 +34,38 @@ class InstagramScraper(BaseScraper):
             self.loader.context.sleep = True
             self.loader.context.request_timeout = 300
     
-    def search_face(self, face_data: Dict[str, Any]) -> Dict[str, Any]:
+    def search_face(self, face_data: Dict[str, Any], leads: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
-        Search for face matches on Instagram
-        
-        Args:
-            face_data: Face detection data with encoding
-            
-        Returns:
-            Dictionary with search results and matches
+        Search for face matches on Instagram.
+        If leads are provided, it will perform a targeted search.
         """
         try:
             self._log_search_attempt("Face Search", "Instagram public posts")
             
             matches = []
+
+            # --- Targeted Search Logic ---
+            # If leads (names, URLs) are provided from Google search, use them first.
+            if leads:
+                self.logger.info("Conducting targeted search on Instagram using leads.")
+                if leads.get("profile_urls"):
+                    for url in leads["profile_urls"]:
+                        if "instagram.com" in url:
+                            try:
+                                # Extract username from URL and fetch profile
+                                username = url.split('/')[-2] if url.endswith('/') else url.split('/')[-1]
+                                self.logger.info(f"Targeted search for profile: {username}")
+                                profile = instaloader.Profile.from_username(self.loader.context, username)
+                                # Analyze profile's posts
+                                for post in profile.get_posts():
+                                    matches.extend(self._analyze_post(post, face_data))
+                                    if len(matches) > (20 if self.aggressive_mode else 10):
+                                        break
+                            except Exception as e:
+                                self.logger.warning(f"Failed to scrape Instagram profile {url}: {e}")
+            
+            # --- Broad Search Logic ---
+            # Original broad search methods to supplement targeted search or run if no leads.
             search_methods = [
                 self._search_hashtags,
                 self._search_locations,

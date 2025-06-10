@@ -59,15 +59,10 @@ class FacebookScraper(BaseScraper):
             self.logger.error(f"Failed to setup Selenium for Facebook: {str(e)}")
             self.driver = None
     
-    def search_face(self, face_data: Dict[str, Any]) -> Dict[str, Any]:
+    def search_face(self, face_data: Dict[str, Any], leads: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
-        Search for face matches on Facebook
-        
-        Args:
-            face_data: Face detection data with encoding
-            
-        Returns:
-            Dictionary with search results and matches
+        Search for face matches on Facebook.
+        If leads (URLs) are provided, it will navigate to them directly.
         """
         if not self.driver:
             return self._handle_search_error(
@@ -79,13 +74,30 @@ class FacebookScraper(BaseScraper):
             self._log_search_attempt("Face Search", "Facebook public content")
             
             matches = []
+
+            # --- Targeted Search Logic ---
+            if leads and leads.get("profile_urls"):
+                self.logger.info("Conducting targeted search on Facebook using URL leads.")
+                for url in leads["profile_urls"]:
+                    if "facebook.com" in url:
+                        try:
+                            self.logger.info(f"Navigating to Facebook URL lead: {url}")
+                            self.driver.get(url)
+                            time.sleep(5) # Allow page to load
+                            # Scrape the page for images to analyze
+                            img_elements = self.driver.find_elements(By.TAG_NAME, "img")
+                            for img in img_elements[:15]: # Limit analysis
+                                matches.extend(self._analyze_image_url(img.get_attribute("src"), face_data, "profile_lead"))
+                        except Exception as e:
+                            self.logger.warning(f"Failed to process Facebook URL {url}: {e}")
+
+            # --- Broad Search Logic ---
             search_methods = [
                 self._search_public_posts,
                 self._search_public_pages,
-                self._search_marketplace  # Sometimes has profile photos
+                self._search_marketplace
             ]
             
-            # Execute search methods
             for search_method in search_methods:
                 try:
                     method_matches = search_method(face_data)
@@ -113,7 +125,6 @@ class FacebookScraper(BaseScraper):
         except Exception as e:
             return self._handle_search_error(e, "Facebook face search")
         finally:
-            # Clean up
             if self.driver:
                 try:
                     self.driver.quit()
@@ -131,23 +142,18 @@ class FacebookScraper(BaseScraper):
             search_url = "https://www.facebook.com/search/photos-of"
             self.driver.get(search_url)
             
-            # Wait for page load
             WebDriverWait(self.driver, 20).until(
                 EC.presence_of_element_located((By.TAG_NAME, "body"))
             )
             
-            # Facebook heavily restricts access to photos without login
-            # This is a limitation for public searching
             self.logger.warning("⚠️  Facebook requires authentication for most content")
             
-            # Look for any publicly accessible images
             img_elements = self.driver.find_elements(By.TAG_NAME, "img")
             
-            for img in img_elements[:10]:  # Limit to avoid timeout
+            for img in img_elements[:10]:
                 try:
                     img_url = img.get_attribute("src")
                     if img_url and "profile" in img_url.lower():
-                        # Analyze potential profile image
                         match_data = self._analyze_image_url(img_url, face_data, "profile")
                         if match_data:
                             matches.append(match_data)
@@ -166,20 +172,17 @@ class FacebookScraper(BaseScraper):
         try:
             self.logger.info("📄 Searching Facebook public pages")
             
-            # Search for pages with generic terms
             search_terms = ["community", "local", "news", "public"]
             
             for term in search_terms:
                 try:
                     search_url = f"https://www.facebook.com/search/pages/?q={quote_plus(term)}"
                     self.driver.get(search_url)
+                    time.sleep(5)
                     
-                    time.sleep(5)  # Wait for content load
-                    
-                    # Look for page profile images
                     img_elements = self.driver.find_elements(By.CSS_SELECTOR, "img[src*='profile']")
                     
-                    for img in img_elements[:5]:  # Limit per search term
+                    for img in img_elements[:5]:
                         try:
                             img_url = img.get_attribute("src")
                             if img_url:
@@ -205,13 +208,10 @@ class FacebookScraper(BaseScraper):
         try:
             self.logger.info("🛒 Searching Facebook Marketplace")
             
-            # Navigate to marketplace
             marketplace_url = "https://www.facebook.com/marketplace"
             self.driver.get(marketplace_url)
-            
             time.sleep(5)
             
-            # Look for seller profile images
             profile_imgs = self.driver.find_elements(By.CSS_SELECTOR, "img[data-imgperflogname*='profile']")
             
             for img in profile_imgs[:10]:
@@ -230,40 +230,32 @@ class FacebookScraper(BaseScraper):
         return matches
     
     def _analyze_image_url(self, image_url: str, face_data: Dict[str, Any], 
-                          context: str) -> Optional[Dict[str, Any]]:
+                          context: str) -> Optional[List[Dict[str, Any]]]:
         """
-        Analyze a single image URL for face matches
-        
-        Args:
-            image_url: URL of the image to analyze
-            face_data: Target face data
-            context: Context of where the image was found
-            
-        Returns:
-            Match data if similarity above threshold, None otherwise
+        Analyze a single image URL for face matches. Returns a list of matches.
         """
+        matches = []
+        if not image_url:
+            return matches
+
         try:
-            # Download image
             image_data = self._download_image(image_url)
             if not image_data:
-                return None
+                return matches
             
-            # Extract faces
             found_encodings = self.face_detector.extract_face_from_url_image(
                 image_url, image_data
             )
             
             if not found_encodings:
-                return None
+                return matches
             
-            # Compare faces
             target_encoding = face_data["encoding"]
             comparisons = self.face_detector.compare_faces(target_encoding, found_encodings)
             
-            # Return best match if above threshold
             for comparison in comparisons:
                 if comparison["is_match"]:
-                    return self._create_match_result(
+                    matches.append(self._create_match_result(
                         similarity_score=comparison["similarity_score"],
                         url=self.driver.current_url,
                         image_url=image_url,
@@ -273,12 +265,12 @@ class FacebookScraper(BaseScraper):
                             "page_title": self.driver.title if self.driver else "",
                             "timestamp": time.time()
                         }
-                    )
+                    ))
+            return matches
         
         except Exception as e:
             self.logger.debug(f"Error analyzing Facebook image: {str(e)}")
-        
-        return None
+            return matches
     
     def _deduplicate_matches(self, matches: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Remove duplicate matches based on image URL"""
